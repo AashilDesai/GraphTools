@@ -5,6 +5,11 @@ def initialize()
 	end
 
 	#accessor methods:
+	
+	#returns array of all of ther vertex values
+	def vertices
+
+	end
 
 	#just returns the neighbors
 	def neighbors(vertex)

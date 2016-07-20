@@ -3,12 +3,14 @@
 class directed_graph
 
 	def initialize()
+		@vertices = {}
 	end
 
 	#accessor methods:
 
-	#returns an array of all of ther vertex values
+	#returns array of all of ther vertex values
 	def vertices
+
 	end
 
 	#returns an array of all of the out neighbors of a vertex
