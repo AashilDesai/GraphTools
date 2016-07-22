@@ -1,6 +1,6 @@
 #lib/undirected_graph.rb
 
-class undirected_graph
+class UndirectedGraph
 def initialize()
 	end
 

@@ -1,6 +1,6 @@
 #lib/directed_graph.rb
 
-class directed_graph
+class DirectedGraph
 
 	def initialize()
 		@vertices = {}
@@ -10,7 +10,7 @@ class directed_graph
 
 	#returns array of all of ther vertex values
 	def vertices
-
+		return @vertices
 	end
 
 	#returns an array of all of the out neighbors of a vertex
