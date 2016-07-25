@@ -15,5 +15,5 @@ BFS,
 DFS
 
 <b> Expected Class Heirarchy </b>
-Directed Graph and Undirected Graph, Undirected will be a child of Directed Graph
+Directed Graph and Undirected Graph, Undirected will have the same mathods as Directed, except in_degree and out_degree (and in_and _out neighbros will be replaced with "neighbors" and "degree" (both of which exist for both graphs))
 Library will also have a "Tools" module that will do cool stuff to graphs (WIP)

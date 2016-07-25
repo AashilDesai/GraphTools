@@ -54,14 +54,6 @@ class DirectedGraph
 		return @vertices[vertex1][vertex2]
 	end
 
-	#given a vertex v, returns a vertex w if weight(v, w) is the largest for all w defined for v
-	def heaviest_neighbor(vertex)
-	end
-
-	#returns given a vertex v, returns a vertex w if weight(v, w) is the smallest for all w defined for v
-	def lightest_neighbor(vertex)
-	end
-
 	#returns the out-degree of a vertex
 	def out_degree(vertex)
 		if !has_vertex?(vertex)
@@ -73,6 +65,11 @@ class DirectedGraph
 	#returns the in-degree of a vertex
 	def in_degree(vertex)
 		in_neighbors(vertex).length
+	end
+
+	#returns the out_degree of a vertex
+	def degree(vertex)
+		out_degree(vertex)
 	end
 
 	#returns true iff this.vertices.contains?(vertex)
