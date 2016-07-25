@@ -229,4 +229,39 @@ describe DirectedGraph do
 			end
 		end
 	end
+
+	describe ".in_degree" do
+		context "vertex not in graph" do
+			it "throws an error" do
+				expect{DirectedGraph.new().in_degree("Dark")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "point to some vertexes" do
+			it "has proper out-degree" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Psychic")
+				g.add_vertex!("Normal")
+				g.add_vertex!("Ghost")
+				g.add_edge!("Psychic", "Ghost", 1)
+				g.add_edge!("Normal", "Ghost", 0)
+
+				expect(g.in_degree("Ghost")).to eql(2)
+			end
+		end
+
+		context "add, remove, add, vertices" do
+			it "has out_degree of 1" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Rock")
+				g.add_vertex!("Water")
+				g.add_vertex!("Grass")
+				g.add_edge!("Water", "Rock", 2)
+				g.remove_edge!("Water", "Rock")
+				g.add_edge!("Grass", "Rock", 2)
+
+				expect(g.in_degree("Rock")).to eql(1)
+			end
+		end
+	end
 end
