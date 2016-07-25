@@ -23,8 +23,6 @@ describe DirectedGraph do
 				end
 			end
 		end
-
-
 	end
 
 	#mutator methods first:
@@ -98,6 +96,14 @@ describe DirectedGraph do
 			end
 		end
 
+		context "given a graph trying to make a self-loop" do
+			it "throws an error" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Dragon")
+
+				expect{g.add_edge!("Dragon", "Dragon", 2)}.to raise_error(ArgumentError)
+			end
+		end
 	end
 
 	describe ".remove_edge!" do
@@ -145,4 +151,82 @@ describe DirectedGraph do
 		end
 	end
 
+	describe ".remove_vertex!" do
+		context "given a graph with no vertices" do
+			it "throws an error" do
+				expect{DirectedGraph.new().remove_vertex!("Dark")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "given a graph with that isolated vertex" do
+			it "removes that vertex" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Fire")
+
+				expect(g.remove_vertex!("Fire")).to eql({})
+				expect(g.has_vertex?("Fire")).to eql(false)
+			end
+		end
+
+		context "given a graph with an out vertex" do
+			it "removes that vertex and its connections" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Fire")
+				g.add_vertex!("Grass")
+				g.add_edge!("Fire", "Grass", 2)
+
+				expect(g.remove_vertex!("Fire")).to eql({"Grass" => 2})
+				expect(g.has_vertex?("Fire")).to eql(false)
+				expect(g.in_degree("Grass")).to eql(0)
+			end
+		end
+
+		context "given a graph with an in vertex" do
+			it "removes that vertex and its connections" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Fire")
+				g.add_vertex!("Water")
+				g.add_edge!("Water", "Fire", 2)
+
+				expect(g.remove_vertex!("Fire")).to eql({})
+				expect(g.has_vertex?("Fire")).to eql(false)
+				expect(g.out_degree("Water")).to eql(0)
+			end
+		end
+	end
+
+	describe ".out_degree" do
+		context "vertex not in graph" do
+			it "throws an error" do
+				expect{DirectedGraph.new().out_degree("Dark")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "point to some vertexes" do
+			it "has proper out-degree" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Psychic")
+				g.add_vertex!("Normal")
+				g.add_vertex!("Ghost")
+				g.add_edge!("Ghost", "Psychic", 2)
+				g.add_edge!("Ghost", "Normal", 0)
+
+				expect(g.out_degree("Ghost")).to eql(2)
+			end
+		end
+
+		context "add, remove, add, vertices" do
+			it "has out_degree of 1" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Bug")
+				g.add_vertex!("Grass")
+				g.add_edge!("Bug", "Grass", 2)
+				g.remove_edge!("Bug", "Grass")
+				g.add_vertex!("Fire")
+				g.add_edge!("Bug", "Fire", 0.5)
+
+				expect(g.out_degree("Bug")).to eql(1)
+			end
+		end
+	end
 end

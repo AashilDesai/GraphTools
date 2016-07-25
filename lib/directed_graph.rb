@@ -45,6 +45,29 @@ class DirectedGraph
 	def lightest_neighbor(vertex)
 	end
 
+	#returns the out-degree of a vertex
+	def out_degree(vertex)
+		if !has_vertex?(vertex)
+			raise ArgumentError.new('Given vertex does not exist in graph')
+		end
+		@vertices[vertex].size
+	end
+
+	#returns the in-degree of a vertex
+	def in_degree(vertex)
+		if !has_vertex?(vertex)
+			raise ArgumentError.new('Given vertex does not exist in graph')
+		end
+
+		deg = 0
+		@vertices.each do |v, neighborhood|
+			if neighborhood.has_key?(vertex)
+				deg += 1
+			end
+		end
+		return deg
+	end
+
 	#returns true iff this.vertices.contains?(vertex)
 	def has_vertex?(vertex)
 		@vertices.has_key?(vertex)
@@ -81,9 +104,12 @@ class DirectedGraph
 	#adds an edge with the given weight between two vertices, starting at vertex1 and pointing to the vertex2
 	#if there is already an edge with said weight, it updates the weight
 	#if either one (or both) of the vertices are not in the graph, it throws an ArgumentError
+	#also, if you're trying to make a self_loop, throws an error
 	def add_edge!(vertex1, vertex2, weight)
 		if !has_vertex?(vertex1) || !has_vertex?(vertex2)
 			raise ArgumentError.new('Given vertex does not exist in graph')
+		elsif vertex1 == vertex2
+			raise ArgumentError.new('No self-loops please')
 		end
 
 		new_edge = !has_edge?(vertex1, vertex2)
@@ -96,9 +122,21 @@ class DirectedGraph
 
 	#removes a vertex and and edges associated with it
 	#if there is no such vertex in the graph, throws an ArgumentError
-	#returns a hash of the removed vertex's neighborhood
+	#returns a hash of the removed vertex's out_neighborhood
 	def remove_vertex!(vertex)
+		if !has_vertex?(vertex)
+			raise ArgumentError.new('Given vertex does not exist in graph')
+		end
 
+		output = @vertices[vertex]
+		@vertices.delete(vertex)
+
+		#now I have to delete it from even single other vertex's pointers
+		@vertices.each do |v, neighborhood|
+			neighborhood.delete(vertex)
+		end
+
+		return output
 	end
 
 	#removes an edge between two vertices (vertex1 -> vertex2)
