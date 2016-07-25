@@ -204,7 +204,7 @@ describe UndirectedGraph do
 				g.add_vertex!("Water")
 				g.add_edge!("Water", "Fire", 2)
 
-				expect(g.remove_vertex!("Fire")).to eql({})
+				expect(g.remove_vertex!("Fire")).to eql({"Water" => 2})
 				expect(g.has_vertex?("Fire")).to eql(false)
 				expect(g.degree("Water")).to eql(0)
 			end
@@ -262,7 +262,7 @@ describe UndirectedGraph do
 	describe ".neighbors" do
 		context "vertex not in graph" do
 			it "throws error" do
-				expect{UndirectedGraph.new().out_neighbors("Dark")}.to raise_error(ArgumentError)
+				expect{UndirectedGraph.new().neighbors("Dark")}.to raise_error(ArgumentError)
 			end
 		end
 
