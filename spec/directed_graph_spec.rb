@@ -238,7 +238,7 @@ describe DirectedGraph do
 		end
 
 		context "point to some vertexes" do
-			it "has proper out-degree" do
+			it "has proper in-degree" do
 				g = DirectedGraph.new()
 				g.add_vertex!("Psychic")
 				g.add_vertex!("Normal")
@@ -251,7 +251,7 @@ describe DirectedGraph do
 		end
 
 		context "add, remove, add, vertices" do
-			it "has out_degree of 1" do
+			it "has in_degree of 1" do
 				g = DirectedGraph.new()
 				g.add_vertex!("Rock")
 				g.add_vertex!("Water")
@@ -261,6 +261,96 @@ describe DirectedGraph do
 				g.add_edge!("Grass", "Rock", 2)
 
 				expect(g.in_degree("Rock")).to eql(1)
+			end
+		end
+	end
+
+	describe ".out_neighbors" do
+		context "vertex not in graph" do
+			it "throws error" do
+				expect{DirectedGraph.new().out_neighbors("Dark")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "no neighbors" do
+			it "returns empty array" do
+				g = DirectedGraph.new
+				g.add_vertex!("Steel")
+				expect(g.out_neighbors("Steel")).to eql([])
+			end
+		end
+
+		context "two out neighbors" do
+			it "returns an array of both neighbors" do
+				g = DirectedGraph.new
+				g.add_vertex!("Steel")
+				g.add_vertex!("Rock")
+				g.add_vertex!("Ice")
+				g.add_edge!("Steel", "Ice", 2)
+				g.add_edge!("Steel", "Rock", 2)
+
+				out_n = g.out_neighbors("Steel")
+				expect(out_n.include?("Ice")).to eql(true)
+				expect(out_n.include?("Rock")).to eql(true)
+				expect(out_n.length).to eql(2)
+			end
+		end
+
+		context "to in neighbors" do
+			it "returns empty array" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Psychic")
+				g.add_vertex!("Normal")
+				g.add_vertex!("Ghost")
+				g.add_edge!("Psychic", "Ghost", 1)
+				g.add_edge!("Normal", "Ghost", 0)
+
+				expect(g.out_neighbors("Ghost")).to eql([])
+			end
+		end
+	end
+
+	describe ".in_neighbors" do
+		context "vertex not in graph" do
+			it "throws error" do
+				expect{DirectedGraph.new().in_neighbors("Dark")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "no neighbors" do
+			it "returns empty array" do
+				g = DirectedGraph.new
+				g.add_vertex!("Steel")
+				expect(g.in_neighbors("Steel")).to eql([])
+			end
+		end
+
+		context "two out neighbors" do
+			it "returns an empty array " do
+				g = DirectedGraph.new
+				g.add_vertex!("Steel")
+				g.add_vertex!("Rock")
+				g.add_vertex!("Ice")
+				g.add_edge!("Steel", "Ice", 2)
+				g.add_edge!("Steel", "Rock", 2)
+
+				expect(g.in_neighbors("Steel")).to eql([])
+			end
+		end
+
+		context "to in neighbors" do
+			it "returns array of neighbors" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Psychic")
+				g.add_vertex!("Normal")
+				g.add_vertex!("Ghost")
+				g.add_edge!("Psychic", "Ghost", 1)
+				g.add_edge!("Normal", "Ghost", 0)
+
+				in_n = g.in_neighbors("Ghost")
+				expect(in_n.include?("Normal")).to eql(true)
+				expect(in_n.include?("Psychic")).to eql(true)
+				expect(in_n.length).to eql(2)			
 			end
 		end
 	end

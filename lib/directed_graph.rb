@@ -15,14 +15,31 @@ class DirectedGraph
 
 	#returns an array of all of the out neighbors of a vertex
 	def out_neighbors(vertex)
+		if !has_vertex?(vertex)
+			raise ArgumentError.new('Given vertex does not exist in graph')
+		end
+
+		@vertices[vertex].keys
 	end
 
 	#returns an array of all of a vertex's in_neighbors
 	def in_neighbors(vertex)
+		if !has_vertex?(vertex)
+			raise ArgumentError.new('Given vertex does not exist in graph')
+		end
+
+		output = []
+		@vertices.each do |v, neighborhood|
+			if neighborhood.has_key?(vertex)
+				output << v
+			end
+		end
+		return output
 	end
 
 	#just returns the out_neighbors
 	def neighbors(vertex)
+		self.out_neighbors
 	end
 
 	#returns the weight of the edge between two vertices (vertex1 -> vertex2)
@@ -55,17 +72,7 @@ class DirectedGraph
 
 	#returns the in-degree of a vertex
 	def in_degree(vertex)
-		if !has_vertex?(vertex)
-			raise ArgumentError.new('Given vertex does not exist in graph')
-		end
-
-		deg = 0
-		@vertices.each do |v, neighborhood|
-			if neighborhood.has_key?(vertex)
-				deg += 1
-			end
-		end
-		return deg
+		in_neighbors(vertex).length
 	end
 
 	#returns true iff this.vertices.contains?(vertex)
