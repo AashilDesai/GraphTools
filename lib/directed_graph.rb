@@ -86,27 +86,32 @@ class DirectedGraph
 			raise ArgumentError.new('Given vertex does not exist in graph')
 		end
 
-		if has_edge?(vertex1, vertex2)
-			ehash = @vertices[vertex1]
-			ehash[vertex2] = weight
-			return false
-		else #need to make a new edge
-			ehash = @vertices[vertex1]
-			ehash[vertex2] = weight
-			return true
-		end
+		new_edge = !has_edge?(vertex1, vertex2)
+
+		ehash = @vertices[vertex1]
+		ehash[vertex2] = weight
+
+		return new_edge
 	end
 
 	#removes a vertex and and edges associated with it
 	#if there is no such vertex in the graph, throws an ArgumentError
-	#returns the removed vertex
+	#returns a hash of the removed vertex's neighborhood
 	def remove_vertex!(vertex)
+
 	end
 
 	#removes an edge between two vertices (vertex1 -> vertex2)
 	#returns the weight of the removed edge
 	#if there was no such edge (or either one of the vertices were not in the vertex, throws an ArgumentError)
 	def remove_edge!(vertex1, vertex2)
+		if !has_vertex?(vertex1) || !has_vertex?(vertex2)
+			raise ArgumentError.new('Given vertex does not exist in graph')
+		elsif !has_edge?(vertex1, vertex2)
+			raise ArgumentError.new('Given edge does not exist in graph')
+		end
+
+		@vertices[vertex1].delete(vertex2)
 	end
 
 end

@@ -113,7 +113,7 @@ describe DirectedGraph do
 				g.add_vertex!("Grass")
 				g.add_vertex!("Electric")
 
-				expect{g.remove_edge!("Grass", "Electric")}.to raise_error(ArgumentError)
+				expect{DirectedGraph.new().remove_edge!("Grass", "Electric", 3)}.to raise_error(ArgumentError)
 			end
 		end
 
@@ -136,7 +136,7 @@ describe DirectedGraph do
 				g.add_vertex!("Fighting")
 				g.add_vertex!("Steel")
 				g.add_edge!("Fighting", "Steel", 2)
-				g.add_edge("Steel", "Fighting", 1)
+				g.add_edge!("Steel", "Fighting", 1)
 
 				expect(g.remove_edge!("Fighting", "Steel")).to eql(2)
 				expect(g.has_edge?("Fighting", "Steel")).to eql(false)
