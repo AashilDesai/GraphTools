@@ -98,7 +98,51 @@ describe DirectedGraph do
 			end
 		end
 
+	end
 
+	describe ".remove_edge!" do
+		context "given vertices not in the graph" do
+			it "throw an error" do
+				expect{DirectedGraph.new().remove_edge!("Grass", "Electric")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "given an edge not in graph" do
+			it "throw an error" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Grass")
+				g.add_vertex!("Electric")
+
+				expect{g.remove_edge!("Grass", "Electric")}.to raise_error(ArgumentError)
+			end
+		end
+
+		context "given an edge in the graph" do
+			it "removes the edge between both vertices" do
+				g = DirectedGraph.new()
+				g.add_vertex!("Fighting")
+				g.add_vertex!("Steel")
+				g.add_edge!("Fighting", "Steel", 2)
+
+				expect(g.remove_edge!("Fighting", "Steel")).to eql(2)
+				expect(g.has_edge?("Fighting", "Steel")).to eql(false)
+			end
+		end
+
+		context "given a 2-way edge in graph" do
+			it "only removes one way" do
+				g = DirectedGraph.new()
+				g = DirectedGraph.new()
+				g.add_vertex!("Fighting")
+				g.add_vertex!("Steel")
+				g.add_edge!("Fighting", "Steel", 2)
+				g.add_edge("Steel", "Fighting", 1)
+
+				expect(g.remove_edge!("Fighting", "Steel")).to eql(2)
+				expect(g.has_edge?("Fighting", "Steel")).to eql(false)
+				expect(g.weight("Steel", "Fighting")).to eql(1)
+			end
+		end
 	end
 
 end
