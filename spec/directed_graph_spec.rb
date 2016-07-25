@@ -338,7 +338,7 @@ describe DirectedGraph do
 			end
 		end
 
-		context "to in neighbors" do
+		context "two in neighbors" do
 			it "returns array of neighbors" do
 				g = DirectedGraph.new()
 				g.add_vertex!("Psychic")
