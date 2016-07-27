@@ -39,7 +39,7 @@ class DirectedGraph
 
 	#just returns the out_neighbors
 	def neighbors(vertex)
-		self.out_neighbors
+		self.out_neighbors(vertex)
 	end
 
 	#returns the weight of the edge between two vertices (vertex1 -> vertex2)
