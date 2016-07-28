@@ -19,7 +19,7 @@ class UnionFind
 	end
 
 	#unions two separate items
-	def union itemA itemB
+	def union itemA, itemB
 	end
 
 end
